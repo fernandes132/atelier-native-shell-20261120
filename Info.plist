@@ -20,12 +20,18 @@
 	</dict>
 	<key>CFBundleIdentifier</key>
 	<string>nl.atelier.studio</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>Atelier</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>4.8.0</string>
+	<key>CFBundleSupportedPlatforms</key>
+	<array>
+		<string>iPhoneOS</string>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>480</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -37,6 +43,8 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Maak alleen op jouw verzoek een kledingfoto voor je stylingbord.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Kies zelf een kledingfoto voor je stylingbord.</string>
 	<key>UIDeviceFamily</key>
