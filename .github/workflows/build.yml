@@ -1,0 +1,19 @@
+name: Generic offline iPhone shell
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash build.sh
+      - run: bash test-simulator.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-shell
+          path: |
+            build/Atelier-iPhone-unsigned.ipa
+            build/container-smoke.json
+          retention-days: 1
