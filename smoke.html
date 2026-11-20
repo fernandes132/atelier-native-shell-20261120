@@ -9,8 +9,10 @@
   if(before!=='kept'){await new Promise((ok,no)=>{const t=db.transaction('values','readwrite');t.objectStore('values').put('kept','example');t.oncomplete=ok;t.onerror=no});localStorage.setItem('container-test','kept');db.close();location.reload();return;}
   const fetched=await fetch('index.html'),text=await fetched.text();
   const c=document.createElement('canvas'),gl=c.getContext('webgl');
-  const result={origin:location.origin,localStorage:before==='kept',indexedDB:stored==='kept',fetch:fetched.ok&&text.includes('Native container test'),webgl:!!gl,glError:gl?gl.getError():null,bridge:!!window.webkit?.messageHandlers?.AtelierNative};
-  result.pass=result.origin==='http://127.0.0.1:18781'&&result.localStorage&&result.indexedDB&&result.fetch&&result.webgl&&result.glError===0&&result.bridge;
+  const worker=await new Promise((ok,no)=>{const url=URL.createObjectURL(new Blob(['onmessage=e=>postMessage(e.data+1)'],{type:'text/javascript'})),w=new Worker(url),timer=setTimeout(()=>no(Error('Worker timeout')),10000);w.onmessage=e=>{clearTimeout(timer);w.terminate();URL.revokeObjectURL(url);ok(e.data===42)};w.onerror=no;w.postMessage(41)});
+  const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('native-container'));
+  const result={origin:location.origin,localStorage:before==='kept',indexedDB:stored==='kept',fetch:fetched.ok&&text.includes('Native container test'),webgl:!!gl,glError:gl?gl.getError():null,bridge:!!window.webkit?.messageHandlers?.AtelierNative,worker,sha256:digest.byteLength===32};
+  result.pass=result.origin==='http://127.0.0.1:18781'&&result.localStorage&&result.indexedDB&&result.fetch&&result.webgl&&result.glError===0&&result.bridge&&result.worker&&result.sha256;
   window.__containerSmoke=result;document.getElementById('status').textContent=JSON.stringify(result);db.close();
  }catch(e){window.__containerSmoke={pass:false,error:String(e)}}
 })();
